@@ -23,6 +23,9 @@ app.use('/api/urls', urlRoutes);
 const resultRoutes = require('./routes/results');
 app.use('/api/results', resultRoutes);
 
+const userRoutes = require('./routes/users');
+app.use('/api/users', userRoutes);
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
