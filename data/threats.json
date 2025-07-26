@@ -1,0 +1,152 @@
+[
+    {
+        "threat": "Cross-site Scripting",
+        "vulnerability": "Cross-site Scripting (XSS) in search box",
+        "severity": "Low"
+    },
+    {
+        "threat": "Cross-site Scripting",
+        "vulnerability": "Stored XSS in comment section",
+        "severity": "Medium"
+    },
+    {
+        "threat": "Cross-site Scripting",
+        "vulnerability": "Reflected XSS in error messages",
+        "severity": "High"
+    },
+    {
+        "threat": "Cross-site Scripting",
+        "vulnerability": "DOM-based XSS in dashboard",
+        "severity": "Critical"
+    },
+    {
+        "threat": "SQL Injection",
+        "vulnerability": "SQL Injection in login form",
+        "severity": "Low"
+    },
+    {
+        "threat": "SQL Injection",
+        "vulnerability": "SQL Injection via query parameter",
+        "severity": "Medium"
+    },
+    {
+        "threat": "SQL Injection",
+        "vulnerability": "Blind SQL Injection in API endpoint",
+        "severity": "High"
+    },
+    {
+        "threat": "CSRF",
+        "vulnerability": "CSRF vulnerability in account settings",
+        "severity": "Critical"
+    },
+    {
+        "threat": "CSRF",
+        "vulnerability": "CSRF in payment submission form",
+        "severity": "Low"
+    },
+    {
+        "threat": "Broken Authentication",
+        "vulnerability": "Broken Authentication via predictable session ID",
+        "severity": "Medium"
+    },
+    {
+        "threat": "Broken Authentication",
+        "vulnerability": "Session Fixation vulnerability",
+        "severity": "High"
+    },
+    {
+        "threat": "Broken Authentication",
+        "vulnerability": "Weak password reset token",
+        "severity": "Critical"
+    },
+    {
+        "threat": "Insecure Cookie",
+        "vulnerability": "Insecure cookie without HttpOnly flag",
+        "severity": "Low"
+    },
+    {
+        "threat": "Information Disclosure",
+        "vulnerability": "Information Disclosure via robots.txt",
+        "severity": "Medium"
+    },
+    {
+        "threat": "Information Disclosure",
+        "vulnerability": "Verbose error messages",
+        "severity": "High"
+    },
+    {
+        "threat": "Unvalidated Redirect",
+        "vulnerability": "Unvalidated redirect to external domain",
+        "severity": "Critical"
+    },
+    {
+        "threat": "Directory Listing",
+        "vulnerability": "Directory listing enabled on /uploads",
+        "severity": "Low"
+    },
+    {
+        "threat": "CORS Misconfiguration",
+        "vulnerability": "Misconfigured CORS policy",
+        "severity": "Medium"
+    },
+    {
+        "threat": "Missing Security Headers",
+        "vulnerability": "Missing HSTS header",
+        "severity": "High"
+    },
+    {
+        "threat": "Missing Security Headers",
+        "vulnerability": "Content Security Policy not set",
+        "severity": "Critical"
+    },
+    {
+        "threat": "Missing Security Headers",
+        "vulnerability": "X-Content-Type-Options Header Missing",
+        "severity": "Low"
+    },
+    {
+        "threat": "Exposed Panel or Files",
+        "vulnerability": "Exposed .git directory",
+        "severity": "Medium"
+    },
+    {
+        "threat": "Exposed Panel or Files",
+        "vulnerability": "Exposed admin panel",
+        "severity": "High"
+    },
+    {
+        "threat": "Exposed Panel or Files",
+        "vulnerability": "Publicly accessible backup files",
+        "severity": "Critical"
+    },
+    {
+        "threat": "Insecure File Upload",
+        "vulnerability": "File upload without extension check",
+        "severity": "Low"
+    },
+    {
+        "threat": "Command Injection",
+        "vulnerability": "Command injection in admin tool",
+        "severity": "Medium"
+    },
+    {
+        "threat": "Sensitive Data Exposure",
+        "vulnerability": "Sensitive data exposed in URL parameters",
+        "severity": "High"
+    },
+    {
+        "threat": "Sensitive Data Exposure",
+        "vulnerability": "Hardcoded credentials in client-side code",
+        "severity": "Critical"
+    },
+    {
+        "threat": "Access Control Issues",
+        "vulnerability": "Access control misconfiguration",
+        "severity": "Low"
+    },
+    {
+        "threat": "Access Control Issues",
+        "vulnerability": "Insecure direct object reference",
+        "severity": "Medium"
+    }
+]
