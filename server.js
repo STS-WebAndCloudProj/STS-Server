@@ -19,6 +19,9 @@ mongoose.connect('mongodb://127.0.0.1:27017/securityDB', {
 const urlRoutes = require('./routes/urls');
 app.use('/api/urls', urlRoutes);
 
+const resultRoutes = require('./routes/results');
+app.use('/api/results', resultRoutes);
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
