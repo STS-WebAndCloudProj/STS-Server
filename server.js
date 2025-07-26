@@ -16,8 +16,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/securityDB', {
 .then(() => console.log("Connected to MongoDB"))
 .catch(err => console.error("MongoDB connection error:", err));
 
-const urlsRoutes = require('./routes/urls');
-app.use('/urls', urlsRoutes);
+const urlRoutes = require('./routes/urls');
+app.use('/api/urls', urlRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
