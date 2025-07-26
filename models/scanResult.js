@@ -1,17 +1,25 @@
 const mongoose = require('mongoose');
 
-const scanResultSchema = new mongoose.Schema({
-    url: String,
-    threats: [String],
-    severity: String,
-    date: { type: Date, default: Date.now }
+const resultSchema = new mongoose.Schema({
+  url: {
+    type: String,
+    required: true
+  },
+  threats: {
+    type: [String],
+    required: true
+  },
+  severity: {
+    type: String,
+    enum: ['Low', 'Medium', 'High', 'Critical'],
+    required: true
+  },
+  scanDate: {
+    type: Date,
+    default: Date.now
+  }
 });
 
-module.exports = mongoose.model('ScanResult', scanResultSchema);
+const Result = mongoose.model('Result', resultSchema);
 
-// {
-//   "url": "https://example.com",
-//   "threats": ["SQL Injection", "XSS", "CSRF"],
-//   "severity": "High",
-//   "date": "2025-07-26T11:43:00.000Z"
-// }
+module.exports = Result;
