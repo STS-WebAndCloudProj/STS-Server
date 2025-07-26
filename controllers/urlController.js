@@ -1,4 +1,4 @@
-const Url = require('../models.url');
+const Url = require('../models/url');
 
 exports.addUrl = async (req, res) => {
   try {
