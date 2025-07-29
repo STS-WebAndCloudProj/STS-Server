@@ -5,10 +5,14 @@ const resultSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  threats: {
-    type: [String],
-    required: true
-  },
+  threats: [
+    {
+      threat: { type: String, required: true },
+      vulnerability: { type: String, required: true },
+      severity: { type: String, required: true }
+    }
+  ],
+
   severity: {
     type: String,
     enum: ['Low', 'Medium', 'High', 'Critical'],

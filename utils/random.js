@@ -9,9 +9,9 @@ function getRandomThreats(count = 5) {
   try {
     const rawData = fs.readFileSync(threatsFilePath);
     const threats = JSON.parse(rawData);
-    
+
     const shuffled = threats.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
+    return shuffled.slice(0, count); // מחזיר אובייקטים שלמים
   } catch (err) {
     console.error('Error reading or parsing threats.json:', err);
     return [];

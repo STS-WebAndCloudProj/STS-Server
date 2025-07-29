@@ -1,40 +1,48 @@
-const Result = require('../models/result');
+const ScanResult = require("../models/scanResult");
+const { getRandomThreats } = require("../utils/random");
 
-// יצירת תוצאה חדשה
-exports.addResult = async (req, res) => {
+const addResult = async (req, res) => {
   try {
-    const { url, threats, severity } = req.body;
+    const { url } = req.body;
 
-    if (!url || !threats || !severity) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    if (!url) {
+      return res.status(400).json({ error: "URL is required" });
     }
 
-    const result = new Result({ url, threats, severity });
+    const randomThreats = getRandomThreats(5);
+
+    const severityLevels = ["Low", "Medium", "High", "Critical"];
+    const maxSeverity = randomThreats.reduce((max, curr) => {
+      return severityLevels.indexOf(curr.severity) > severityLevels.indexOf(max)
+        ? curr.severity
+        : max;
+    }, "Low");
+
+    const result = new ScanResult({
+      url,
+      threats: randomThreats,
+      severity: maxSeverity,
+    });
+
     await result.save();
-
-    res.status(201).json({ message: 'Result saved successfully', result });
-  } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    res.status(201).json(result);
+  } catch (error) {
+    console.error("Error adding scan result:", error);
+    res.status(500).json({ error: "Failed to add scan result" });
   }
 };
 
-// קבלת כל התוצאות
-exports.getAllResults = async (req, res) => {
+const getResults = async (req, res) => {
   try {
-    const results = await Result.find().sort({ createdAt: -1 });
-    res.json(results);
-  } catch (err) {
-    res.status(500).json({ error: 'Server error' });
+    const results = await ScanResult.find();
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error fetching results:", error);
+    res.status(500).json({ error: "Failed to fetch results" });
   }
 };
 
-// קבלת תוצאות לפי URL
-exports.getResultsByUrl = async (req, res) => {
-  try {
-    const { url } = req.params;
-    const results = await Result.find({ url });
-    res.json(results);
-  } catch (err) {
-    res.status(500).json({ error: 'Server error' });
-  }
+module.exports = {
+  addResult,
+  getResults
 };
