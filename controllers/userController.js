@@ -1,32 +1,34 @@
 const User = require('../models/user');
 
-// הרשמה של משתמש חדש
 const registerUser = async (req, res) => {
   try {
-    const { username, password, email, role } = req.body;
-
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(409).json({ error: 'Username already taken' });
+    const { email, password, role } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+    const existingUser = await User.findOne({ email });
+    if (existingUser){
+      return res.status(400).json({ message: 'Email already exists' });
     }
 
-    const newUser = new User({ username, password, email, role });
-    await newUser.save();
-
+    const user = new User({ email, password , role}); //create a new user instance
+    await user.save();
     res.status(201).json({ message: 'User registered successfully' });
-  } catch (error) {
-    console.error('Registration error:', error); // ✅ הדפסת השגיאה לשרת
-    res.status(500).json({ error: error.message || 'Registration failed' });
+  } catch (err) {
+    console.error('Registration error:', err);
+    res.status(500).json({ message: 'Registration failed' });
   }
 };
 
 
-// התחברות של משתמש קיים
+// handle user login
 const loginUser = async (req, res) => {
-  const { username, password } = req.body;
-
   try {
-    const user = await User.findOne({ username, password });
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
+    }
+    const user = await User.findOne({ email, password });
     if (!user) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
