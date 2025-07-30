@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const urlController = require('../controllers/urlController');
+const { getAllUrls, getUrlsByUserId, addUrl } = require('../controllers/urlController');
 
-router.get('/', urlController.getAllUrls);
-router.post('/', urlController.addUrl);
+router.get('/', getAllUrls);
+router.get('/:userId', getUrlsByUserId);
+router.post('/', addUrl);
 
 
 module.exports = router;

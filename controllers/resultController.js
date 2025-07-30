@@ -31,9 +31,11 @@ const getResultsByUserId = async (req, res) => {
 //POST: Add a new scan result
 const addResult = async (req, res) => {
   try {
-    const { url } = req.body;
-
-    if (!url) {
+    const { userId, urlId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+    if (!urlId) {
       return res.status(400).json({ error: "URL is required" });
     }
 
@@ -46,8 +48,10 @@ const addResult = async (req, res) => {
         : max;
     }, "Low");
 
+
     const result = new ScanResult({
-      url,
+      userId: userId,
+      urlId: urlId,
       threats: randomThreats,
       severity: maxSeverity,
     });

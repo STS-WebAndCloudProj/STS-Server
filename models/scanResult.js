@@ -7,9 +7,10 @@ const resultSchema = new mongoose.Schema({
     default: () => uuidv4(),
     unique: true
   },
-  url: {
+  urlId: {
     type: String,
-    required: true
+    default: () => uuidv4(),
+    unique: true
   },
   threats: [
     {
