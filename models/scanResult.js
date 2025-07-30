@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 const resultSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    default: () => uuidv4(),
+    unique: true
+  },
   url: {
     type: String,
     required: true
@@ -12,7 +18,6 @@ const resultSchema = new mongoose.Schema({
       severity: { type: String, required: true }
     }
   ],
-
   severity: {
     type: String,
     enum: ['Low', 'Medium', 'High', 'Critical'],

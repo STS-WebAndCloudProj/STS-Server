@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const urlRoutes = require('./routes/urls');
 const resultRoutes = require('./routes/results');
 const userRoutes = require('./routes/users');
+const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
 
 const app = express();
 const port = 3000;

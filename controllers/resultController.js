@@ -1,6 +1,34 @@
 const ScanResult = require("../models/scanResult");
 const { getRandomThreats } = require("../utils/random");
 
+//get Results from all users!
+const getResults = async (req, res) => {
+  try {
+    const results = await ScanResult.find();
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error fetching results:", error);
+    res.status(500).json({ error: "Failed to fetch results" });
+  }
+};
+
+//get all results for userId
+const getResultsByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    if (!userId) {
+      return res.status(400).json({ error: "User ID is required" });
+    }
+
+    const results = await ScanResult.find({ userId });
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Error fetching results:", error);
+    res.status(500).json({ error: "Failed to fetch results" });
+  }
+};
+
+//POST: Add a new scan result
 const addResult = async (req, res) => {
   try {
     const { url } = req.body;
@@ -32,17 +60,9 @@ const addResult = async (req, res) => {
   }
 };
 
-const getResults = async (req, res) => {
-  try {
-    const results = await ScanResult.find();
-    res.status(200).json(results);
-  } catch (error) {
-    console.error("Error fetching results:", error);
-    res.status(500).json({ error: "Failed to fetch results" });
-  }
-};
 
 module.exports = {
   addResult,
-  getResults
+  getResults,
+  getResultsByUserId
 };
