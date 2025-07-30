@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
 const resultSchema = new mongoose.Schema({
+  scanId: {
+    type: String,
+    default: () => uuidv4(),
+    unique: true
+  },
   userId: {
     type: String,
     default: () => uuidv4(),
@@ -12,6 +17,7 @@ const resultSchema = new mongoose.Schema({
     default: () => uuidv4(),
     unique: true
   },
+  url: { type: mongoose.Schema.Types.ObjectId, ref: 'Url' }, // Reference to Url model
   threats: [
     {
       threat: { type: String, required: true },

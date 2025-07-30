@@ -6,6 +6,7 @@ const path = require('path');
 const urlRoutes = require('./routes/urls');
 const resultRoutes = require('./routes/results');
 const userRoutes = require('./routes/users');
+const scanRoutes = require('./routes/scans');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
@@ -26,6 +27,7 @@ mongoose.connect(process.env.MONGO_URI, {
 app.use('/api/urls', urlRoutes);
 app.use('/api/results', resultRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/scans', scanRoutes);
 
 
 app.listen(port, () => {
