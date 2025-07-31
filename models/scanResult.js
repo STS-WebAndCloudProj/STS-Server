@@ -5,17 +5,17 @@ const resultSchema = new mongoose.Schema({
   scanId: {
     type: String,
     default: () => uuidv4(),
-    unique: true
+    // unique: true
   },
   userId: {
     type: String,
     default: () => uuidv4(),
-    unique: true
+    // unique: true
   },
   urlId: {
     type: String,
     default: () => uuidv4(),
-    unique: true
+    // unique: true
   },
   url: { type: mongoose.Schema.Types.ObjectId, ref: 'Url' }, // Reference to Url model
   threats: [

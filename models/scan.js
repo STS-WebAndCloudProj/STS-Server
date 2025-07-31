@@ -6,7 +6,7 @@ const scanSchema = new mongoose.Schema({
     scanId: {
         type: String,
         default: () => uuidv4(),
-        unique: true
+        // unique: true
     },
     urlId: {
         type: String,

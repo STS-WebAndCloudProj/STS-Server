@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     userId: {
     type: String,
     default: () => uuidv4(),
-    unique: true
+    // unique: true
   }
 });
 
