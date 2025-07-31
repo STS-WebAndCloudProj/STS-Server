@@ -7,6 +7,7 @@ const urlRoutes = require('./routes/urls');
 const resultRoutes = require('./routes/results');
 const userRoutes = require('./routes/users');
 const scanRoutes = require('./routes/scans');
+const calendarRoutes = require('./routes/calendar');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
@@ -28,6 +29,7 @@ app.use('/api/urls', urlRoutes);
 app.use('/api/results', resultRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/scans', scanRoutes);
+app.use('/', calendarRoutes);
 
 
 app.listen(port, () => {
