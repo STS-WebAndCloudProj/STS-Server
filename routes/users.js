@@ -5,11 +5,18 @@ const User = require('../models/user'); // הוספה חשובה!
 
 router.post('/register', userController.registerUser);
 router.post('/login', userController.loginUser);
+router.put('/status', userController.updateUserStatus);
 
 // כל המשתמשים ללא סיסמא
 router.get('/', async (req, res) => {
     try {
-        const users = await User.find({}, '-password');
+        const { status } = req.query; // Optional status filter
+        const filter = {};
+        if (status) {
+            filter.status = status;
+        }
+        
+        const users = await User.find(filter, '-password');
         res.json(users);
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch users' });

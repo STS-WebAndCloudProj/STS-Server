@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema({
     enum: ['admin', 'user'],
     default: 'user'
   },
+  status: {
+    type: String,
+    enum: ['active', 'inactive', 'suspended', 'pending'],
+    default: 'active'
+  },
     userId: {
     type: String,
     default: () => uuidv4(),
