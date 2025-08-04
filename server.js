@@ -7,7 +7,6 @@ const urlRoutes = require('./routes/urls');
 const resultRoutes = require('./routes/results');
 const userRoutes = require('./routes/users');
 const scanRoutes = require('./routes/scans');
-const calendarRoutes = require('./routes/calendar');
 const { v4: uuidv4 } = require('uuid');
 require('dotenv').config();
 
