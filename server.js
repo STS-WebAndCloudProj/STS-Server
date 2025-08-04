@@ -29,7 +29,6 @@ app.use('/api/urls', urlRoutes);
 app.use('/api/results', resultRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/scans', scanRoutes);
-app.use('/', calendarRoutes);
 
 
 app.listen(port, () => {

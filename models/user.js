@@ -18,11 +18,16 @@ const userSchema = new mongoose.Schema({
     enum: ['admin', 'user'],
     default: 'user'
   },
-    userId: {
+  userId: {
     type: String,
     default: () => uuidv4(),
-    // unique: true
+  },
+  status: {
+    type: String,
+    enum: ['active', 'inactive', 'banned'], // or your desired statuses
+    default: 'active'
   }
+
 });
 
 module.exports = mongoose.model('User', userSchema);

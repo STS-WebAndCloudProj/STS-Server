@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
-const User = require('../models/user'); // הוספה חשובה!
+const User = require('../models/user');
 
+// Registration now accepts 'status'
 router.post('/register', userController.registerUser);
+
+// Login checks status inside controller
 router.post('/login', userController.loginUser);
 
-// כל המשתמשים ללא סיסמא
+// Get all users (shows status, hides password)
 router.get('/', async (req, res) => {
     try {
         const users = await User.find({}, '-password');
@@ -16,7 +19,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-// שליפת פרופיל משתמש לפי שם משתמש
+// Get user profile (shows status, hides password)
 router.get('/profile/:username', async (req, res) => {
     try {
         const user = await User.findOne({ username: req.params.username }, '-password');
@@ -29,22 +32,24 @@ router.get('/profile/:username', async (req, res) => {
     }
 });
 
+// Admin check, status checked in controller
+router.post('/admin-data', userController.adminData);
 
-// בדיקת גישה של אדמין
-router.post('/admin-data', async (req, res) => {
-    const { username } = req.body;
-
+// OPTIONAL: Admin can update user status
+router.patch('/:id/status', async (req, res) => {
     try {
-        const user = await User.findOne({ username });
-        if (!user) return res.status(404).json({ error: 'User not found' });
-
-        if (user.role !== 'admin') {
-            return res.status(403).json({ error: 'Access denied. Admins only.' });
+        const { status } = req.body;
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { status },
+            { new: true }
+        );
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
         }
-
-        res.json({ message: 'Welcome, admin! Here is your secure data.' });
+        res.json({ message: 'Status updated', user });
     } catch (err) {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Failed to update status' });
     }
 });
 
