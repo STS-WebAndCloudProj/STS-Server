@@ -22,6 +22,16 @@ const scanSchema = new mongoose.Schema({
         enum: ['pending', 'running', 'completed'],
         default: 'pending'
     },
+    severity: {
+        type: String,
+        enum: ['Low', 'Medium', 'High', 'Critical'],
+        default: 'Low'
+    },
+    result: {
+        type: String,
+        enum: ['safe', 'unsafe', 'unknown', 'error'],
+        default: 'unknown'
+    }
 });
 const Scan = mongoose.model('Scan', scanSchema);
 
