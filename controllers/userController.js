@@ -79,7 +79,7 @@ const getUserStats = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const activeUsers = await User.countDocuments({ status: 'active' });
-    const suspendedUsers = await User.countDocuments({ status: { $in: ['suspended', 'banned', 'inactive'] } });
+    const suspendedUsers = await User.countDocuments({ status: { $in: ['suspended', 'disabled'] } });
 
     res.json({
       registered: totalUsers,
@@ -149,7 +149,7 @@ const updateUserStatus = async (req, res) => {
     const { userId } = req.params;
     const { status } = req.body;
 
-    if (!['active', 'inactive', 'suspended', 'banned'].includes(status)) {
+    if (!['active', 'suspended', 'disabled'].includes(status)) {
       return res.status(400).json({ error: 'Invalid status' });
     }
 

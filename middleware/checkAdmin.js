@@ -2,15 +2,15 @@ const User = require('../models/user');
 
 const checkAdmin = async (req, res, next) => {
   try {
-    // Get userId from request body, params, or headers
-    const userId = req.body.userId || req.params.userId || req.headers['user-id'];
+    // Get userId from headers first (admin making the request), then body, then params
+    const userId = req.headers['user-id'] || req.body.userId || req.params.userId;
     
     if (!userId) {
       return res.status(400).json({ error: 'User ID is required' });
     }
 
-    // Find user by userId (assuming you have a userId field in your User model)
-    const user = await User.findOne({ userId }); // or User.findById(userId) if using MongoDB _id
+    // Find user by userId (this should be the admin user making the request)
+    const user = await User.findOne({ userId });
     
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
