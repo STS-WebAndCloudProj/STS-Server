@@ -24,10 +24,19 @@ const userSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['active', 'inactive', 'banned'], // or your desired statuses
+    enum: ['active', 'inactive', 'banned', 'suspended'], // Added 'suspended' status
     default: 'active'
+  },
+  lastLogin: {
+    type: Date,
+    default: null
+  },
+  sitesCount: {
+    type: Number,
+    default: 0
   }
-
+}, {
+  timestamps: true // This adds createdAt and updatedAt automatically
 });
 
 module.exports = mongoose.model('User', userSchema);
