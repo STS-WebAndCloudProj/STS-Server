@@ -17,5 +17,7 @@ router.put('/:scanId/status', scanController.updateScanStatus);
 router.get('/admin/stats', checkAdmin, scanController.getAllScansStats);
 // GET /api/scans/admin/activity/weekly → Get weekly scan activity for charts
 router.get('/admin/activity/weekly', checkAdmin, scanController.getWeeklyScanActivity);
+// GET /api/scans/admin/vulnerability-types → Get vulnerability types distribution for pie chart
+router.get('/admin/vulnerability-types', checkAdmin, scanController.getVulnerabilityTypes);
 
 module.exports = router;

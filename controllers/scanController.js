@@ -182,6 +182,151 @@ const getWeeklyScanActivity = async (req, res) => {
     }
 };
 
+// Get vulnerability types distribution for pie chart
+const getVulnerabilityTypes = async (req, res) => {
+    try {
+        console.log('=== DEBUGGING VULNERABILITY TYPES ===');
+        
+        // Get all results with their threats array
+        const allResults = await Result.find({}).limit(10);
+        console.log('\nSample results from database:');
+        allResults.forEach((result, index) => {
+            console.log(`  ${index + 1}. ID: ${result._id}`);
+            console.log(`     Severity: "${result.severity}"`);
+            console.log(`     ScanDate: ${result.scanDate}`);
+            console.log(`     Threats array:`, result.threats);
+            if (result.threats && result.threats.length > 0) {
+                result.threats.forEach((threat, tIndex) => {
+                    console.log(`       Threat ${tIndex + 1}: "${threat.threat}" | Vulnerability: "${threat.vulnerability}" | Severity: "${threat.severity}"`);
+                });
+            }
+            console.log('     ---');
+        });
+
+        // Get all results to analyze threats
+        const allResultsWithThreats = await Result.find({});
+        
+        // Initialize counters
+        let crossSiteScripting = 0;
+        let sqlInjection = 0;
+        let csrf = 0;
+        let brokenAuthentication = 0;
+        
+        // Arrays to store matching threats for debugging
+        const xssThreats = [];
+        const sqlThreats = [];
+        const csrfThreats = [];
+        const authThreats = [];
+        
+        // Process each result and its threats
+        allResultsWithThreats.forEach(result => {
+            if (result.threats && result.threats.length > 0) {
+                result.threats.forEach(threat => {
+                    const threatText = (threat.threat || '').toLowerCase();
+                    const vulnText = (threat.vulnerability || '').toLowerCase();
+                    const combinedText = `${threatText} ${vulnText}`;
+                    
+                    // Check for Cross-site Scripting / XSS
+                    if (combinedText.includes('xss') || 
+                        combinedText.includes('cross-site scripting') || 
+                        combinedText.includes('cross site scripting') ||
+                        combinedText.includes('script injection')) {
+                        crossSiteScripting++;
+                        xssThreats.push({ resultId: result._id, threat: threat.threat, vulnerability: threat.vulnerability });
+                    }
+                    // Check for SQL Injection
+                    else if (combinedText.includes('sql injection') || 
+                             combinedText.includes('sqli') ||
+                             combinedText.includes('sql inject')) {
+                        sqlInjection++;
+                        sqlThreats.push({ resultId: result._id, threat: threat.threat, vulnerability: threat.vulnerability });
+                    }
+                    // Check for CSRF
+                    else if (combinedText.includes('csrf') || 
+                             combinedText.includes('cross-site request forgery') ||
+                             combinedText.includes('cross site request forgery')) {
+                        csrf++;
+                        csrfThreats.push({ resultId: result._id, threat: threat.threat, vulnerability: threat.vulnerability });
+                    }
+                    // Check for Authentication issues
+                    else if (combinedText.includes('authentication') || 
+                             combinedText.includes('broken auth') ||
+                             combinedText.includes('auth') ||
+                             combinedText.includes('login') ||
+                             combinedText.includes('password')) {
+                        brokenAuthentication++;
+                        authThreats.push({ resultId: result._id, threat: threat.threat, vulnerability: threat.vulnerability });
+                    }
+                });
+            }
+        });
+
+        // Calculate total threats and "Other"
+        const totalThreats = allResultsWithThreats.reduce((sum, result) => {
+            return sum + (result.threats ? result.threats.length : 0);
+        }, 0);
+        
+        const categorized = crossSiteScripting + sqlInjection + csrf + brokenAuthentication;
+        const other = totalThreats - categorized;
+
+        console.log('\n=== THREAT ANALYSIS RESULTS ===');
+        console.log(`Cross-site Scripting threats found: ${crossSiteScripting}`);
+        xssThreats.forEach((t, i) => console.log(`  ${i+1}. "${t.threat}" - "${t.vulnerability}"`));
+        
+        console.log(`\nSQL Injection threats found: ${sqlInjection}`);
+        sqlThreats.forEach((t, i) => console.log(`  ${i+1}. "${t.threat}" - "${t.vulnerability}"`));
+        
+        console.log(`\nCSRF threats found: ${csrf}`);
+        csrfThreats.forEach((t, i) => console.log(`  ${i+1}. "${t.threat}" - "${t.vulnerability}"`));
+        
+        console.log(`\nBroken Authentication threats found: ${brokenAuthentication}`);
+        authThreats.forEach((t, i) => console.log(`  ${i+1}. "${t.threat}" - "${t.vulnerability}"`));
+
+        console.log('\n=== SUMMARY ===');
+        console.log(`Cross-site Scripting: ${crossSiteScripting}`);
+        console.log(`SQL Injection: ${sqlInjection}`);
+        console.log(`CSRF: ${csrf}`);
+        console.log(`Broken Authentication: ${brokenAuthentication}`);
+        console.log(`Other: ${other}`);
+        console.log(`Total categorized: ${categorized}`);
+        console.log(`Total threats in DB: ${totalThreats}`);
+        console.log('==========================================');
+
+        const vulnerabilityData = {
+            crossSiteScripting,
+            sqlInjection,
+            csrf,
+            brokenAuthentication,
+            other: other > 0 ? other : 0
+        };
+
+        res.json({
+            message: 'Vulnerability types retrieved successfully',
+            vulnerabilityTypes: vulnerabilityData,
+            chartData: {
+                labels: ['Cross-site Scripting', 'SQL Injection', 'CSRF', 'Broken Authentication', 'Other'],
+                data: [crossSiteScripting, sqlInjection, csrf, brokenAuthentication, other > 0 ? other : 0],
+                colors: ['#f16b7a', '#f8ab59', '#fbe078', '#89c791', '#62a3d3']
+            },
+            debug: {
+                totalResults: allResultsWithThreats.length,
+                totalThreats: totalThreats,
+                categorizedThreats: categorized,
+                sampleResults: allResults.slice(0, 3),
+                detailedThreats: {
+                    xss: xssThreats,
+                    sql: sqlThreats,
+                    csrf: csrfThreats,
+                    auth: authThreats
+                }
+            }
+        });
+    } catch (err) {
+        console.error('Vulnerability types error:', err);
+        res.status(500).json({ error: 'Failed to retrieve vulnerability types' });
+    }
+};
+
 
 
 module.exports = {
@@ -189,5 +334,6 @@ module.exports = {
     getScansByUrlId,
     getAllScansStats,
     updateScanStatus,
-    getWeeklyScanActivity
+    getWeeklyScanActivity,
+    getVulnerabilityTypes
 };
