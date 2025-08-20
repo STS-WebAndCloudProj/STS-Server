@@ -13,10 +13,10 @@ const port = 3000;
 
 // Middlewares
 app.use(cors({
-  origin: true, // Allow all origins
+  origin: "https://venerable-phoenix-5a34c4.netlify.app", // your Netlify frontend
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'user-id', 'X-User-Role'] // include your custom headers
 }));
 app.use(express.json());
 
