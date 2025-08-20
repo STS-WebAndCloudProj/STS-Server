@@ -101,6 +101,9 @@ const getAllUsers = async (req, res) => {
     // Build search query
     let query = {};
     
+    // Exclude admin users
+    query.role = { $ne: 'admin' };
+    
     if (search) {
       query.email = { $regex: search, $options: 'i' };
     }
