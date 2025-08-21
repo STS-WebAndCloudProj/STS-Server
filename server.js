@@ -16,7 +16,7 @@ app.use(cors({
   origin: "https://venerable-phoenix-5a34c4.netlify.app", // your Netlify frontend
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'user-id', 'X-User-Role'] // headers actually used by your frontend
+  allowedHeaders: ['Content-Type', 'Authorization', 'user-id', 'X-User-Role'] // include your custom headers
 }));
 app.use(express.json());
 
