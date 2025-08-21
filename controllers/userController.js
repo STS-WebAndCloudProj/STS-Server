@@ -77,9 +77,10 @@ const adminData = async (req, res) => {
 // Get user statistics for dashboard
 const getUserStats = async (req, res) => {
   try {
-    const totalUsers = await User.countDocuments();
-    const activeUsers = await User.countDocuments({ status: 'active' });
-    const suspendedUsers = await User.countDocuments({ status: { $in: ['suspended', 'disabled'] } });
+    // Exclude admin users from all stats
+    const totalUsers = await User.countDocuments({ role: { $ne: 'admin' } });
+    const activeUsers = await User.countDocuments({ status: 'active', role: { $ne: 'admin' } });
+    const suspendedUsers = await User.countDocuments({ status: 'suspended', role: { $ne: 'admin' } });
 
     res.json({
       registered: totalUsers,
